@@ -1,0 +1,4 @@
+CREATE TABLE hashtags (
+    id CHAR(36) NOT NULL PRIMARY KEY,
+    name CHAR(30) NOT NULL UNIQUE
+);

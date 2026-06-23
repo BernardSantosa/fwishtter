@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: user-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mp-api
+    username: bernardsantosa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    user: bernardsantosa
+    password:
+    baseline-description: "init"
+    baseline-version: 0
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+application:
+  security:
+    jwt:
+      secret-key: Z3VlbWFoYXNpc3dhYmludXNpZ3BheWFuZ3RpbmdnaWJlbmdldG9rZQ
+      expiration: 3600000
+      refresh-token:
+        expiration: 3600000
+
+server:
+  port: 8083
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

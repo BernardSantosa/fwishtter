@@ -1,7 +1,7 @@
-package fwishtter.com.entity.common;
+package com.fwishtter.entity.common;
 
-import fwishtter.com.converter.LocalDateTimeType;
-import fwishtter.com.converter.VarcharUuidType;
+import com.fwishtter.DateHelper;
+import com.fwishtter.converter.LocalDateTimeType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
-import org.hibernate.type.descriptor.java.DataHelper;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
@@ -24,10 +23,9 @@ public abstract class IdDateAudit implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
-    @JdbcTypeCode(SqlTypes.UUID)
+    @Column(name = "id", nullable = false, columnDefinition = "CHAR(36)")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @UuidGenerator(style = UuidGenerator.Style.TIME)
-    @Type(VarcharUuidType.class)
     private UUID id;
 
     @Column(name = "created_time", nullable = false, updatable = false)
@@ -44,7 +42,20 @@ public abstract class IdDateAudit implements Serializable {
     @PrePersist
     public void prePresist(){
         if(dateTimeAsUTC) {
-            this.setCreatedTime(DataHelper.);
+            this.setCreatedTime(DateHelper.localDateTimeIso8601());
+            this.setUpdatedTime(DateHelper.localDateTimeIso8601());
+        } else {
+            this.setCreatedTime(LocalDateTime.now());
+            this.setUpdatedTime(LocalDateTime.now());
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        if (dateTimeAsUTC) {
+            this.setUpdatedTime(DateHelper.localDateTimeIso8601());
+        } else {
+            this.setUpdatedTime(LocalDateTime.now());
         }
     }
 }

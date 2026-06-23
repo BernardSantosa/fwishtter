@@ -1,5 +1,5 @@
 CREATE TABLE notifications (
-    id CHAR(36) NOT NULL,
+    id CHAR(36) NOT NULL PRIMARY KEY,
     receiver_id CHAR(36) NOT NULL,
     sender_id CHAR(36) NOT NULL,
     tweet_id CHAR(36),

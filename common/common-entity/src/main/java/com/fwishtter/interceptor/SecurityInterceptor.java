@@ -1,4 +1,4 @@
-package com.fwishtter.userservice.security;
+package com.fwishtter.interceptor;
 
 import com.fwishtter.security.JwtInterceptor;
 import com.fwishtter.security.JwtService;

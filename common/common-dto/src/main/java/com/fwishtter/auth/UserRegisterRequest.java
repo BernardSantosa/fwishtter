@@ -1,6 +1,7 @@
-package com.fwishtter.userservice.dto;
+package com.fwishtter.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -8,15 +9,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.annotation.Nullable;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRegisterRequest {
     @NotNull(message = "Please fill out the username section")
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 50)
     @JsonProperty(value = "display_name")
     private String displayName;
 
@@ -35,12 +34,15 @@ public class UserRegisterRequest {
     private String reTypePassword;
 
     @JsonProperty(value = "handle")
+    @NotNull
+    @Size(min = 3, max = 15)
     private String handle;
 
     @JsonProperty(value = "phone_number")
     @NotNull(message = "Please input phone number")
     private String phoneNumber;
 
+    @JsonProperty("bio")
     @Nullable
     private String bio;
 }

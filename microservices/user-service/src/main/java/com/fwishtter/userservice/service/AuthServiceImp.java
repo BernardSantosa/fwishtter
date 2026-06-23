@@ -1,24 +1,32 @@
-package com.microservices.userservice.service;
+package com.fwishtter.userservice.service;
 
+import com.fwishtter.auth.UserLoginRequest;
+import com.fwishtter.auth.UserRegisterRequest;
+import com.fwishtter.common.BaseResponse;
 import com.fwishtter.entity.user.User;
-import com.microservices.userservice.dto.*;
-import com.microservices.userservice.exception.BaseException;
-import com.microservices.userservice.mapper.UserMapper;
-import com.microservices.userservice.repository.UserRepository;
-import com.microservices.userservice.security.JwtInterceptor;
-import com.microservices.userservice.security.JwtService;
+import com.fwishtter.mapper.UserMapper;
+import com.fwishtter.model.BaseException;
+import com.fwishtter.repository.UserRepository;
+import com.fwishtter.security.JwtInterceptor;
+import com.fwishtter.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import tools.jackson.databind.ObjectMapper;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +40,7 @@ public class AuthServiceImp implements AuthService {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private static final String TOPIC = "user-registration-event";
     private final ObjectMapper objectMapper;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Transactional
     @Override
@@ -61,14 +70,9 @@ public class AuthServiceImp implements AuthService {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone Number Already Used!");
                 });
 
-        userRepository.findUserByHandle(userRegisterRequest.getHandle())
-                .ifPresent(user -> {
-                    log.error("Handle Already Used!");
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Handle Already Used!");
-                });
-
-
-        User newUser = UserMapper.mapRegisterRequestToUser(userRegisterRequest);
+        String encodedPassword = passwordEncoder.encode(password);
+        String finalHandle = generateUniqueHandle(userRegisterRequest.getHandle());
+        User newUser = UserMapper.mapRegisterRequestToUser(userRegisterRequest, encodedPassword, finalHandle);
 
         userRepository.saveAndFlush(newUser);
 
@@ -82,42 +86,64 @@ public class AuthServiceImp implements AuthService {
         );
     }
 
+    public String generateUniqueHandle(String baseHandle) {
+        String cleanHandle = baseHandle.replaceAll("\\s+", "").toLowerCase();
+        String candidate = cleanHandle;
+        int counter = 1;
+        int maxAttempts = 10;
+
+        while (userRepository.existsByHandle(candidate) && counter <= maxAttempts) {
+            candidate = cleanHandle + counter;
+            counter++;
+        }
+
+        if (counter > maxAttempts) {
+            candidate = cleanHandle + UUID.randomUUID().toString().substring(0, 5);
+        }
+
+        return candidate;
+    }
+
     @Override
     public BaseResponse login(UserLoginRequest userLoginRequest) {
 
         User user = userRepository.findUserByEmail(userLoginRequest.getEmail())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED,  "Username Wrong!"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED,  "Email / Password Wrong!"));
 
+        assert user.getPassword() != null;
         if(BCrypt.checkpw(userLoginRequest.getPassword(), user.getPassword())) {
             Map<String, Object> extraClaims = new HashMap<>();
             extraClaims.put("userId", user.getId());
 
-            user.setToken(jwtService.generateToken(extraClaims, user));
-            user.setExpired_at(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 30);
-            userRepository.save(user);
+            String jwtToken = jwtService.generateToken(extraClaims, user);
+            Long expiredAt = System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 30;
+//            user.setToken(jwtService.generateToken(extraClaims, user));
+//            user.setExpired_at(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 30);
+//            userRepository.save(user);
+
+            Object response = UserMapper.mapToUserLoginResponse(user, jwtToken, expiredAt);
+
+            return new BaseResponse<>(
+                    HttpStatus.OK.value(),
+                    HttpStatus.OK,
+                    "Login Successfully, Welcome!",
+                    response
+            );
         } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Password Wrong!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email / Password Wrong!");
         }
-
-        Object response = UserMapper.mapToUserLoginResponse(user);
-
-        return new BaseResponse<>(
-                HttpStatus.OK.value(),
-                HttpStatus.OK,
-                "Login Successfully, Welcome!",
-                response
-        );
     }
 
     @Override
     public void logout() {
-        String currentToken = jwtInterceptor.getJwt();
+//        String currentToken = jwtInterceptor.getJwt();
 
-        User user = userRepository.findByToken(currentToken)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token Invalid"));
+//        User user = userRepository.findByToken(currentToken)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token Invalid"));
 
-        user.setToken(null);
-        user.setExpired_at(null);
-        userRepository.save(user);
+//        user.setToken(null);
+//        user.setExpired_at(null);
+//        userRepository.save(user);
     }
+
 }

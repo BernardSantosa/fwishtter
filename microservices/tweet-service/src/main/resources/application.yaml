@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: twitter-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fwishtter_api
+    username:
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  flyway:
+    baseline-on-migrate: true
+    locations: classpath:db_postgresql/migration
+    url: jdbc:postgresql://localhost:5432/fwishtter_api
+    enabled: false
+    user: bernardsantosa
+    password:
+    baseline-description: "init"
+    baseline-version: 0
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+  cloud:
+    zookeeper:
+      connect-string: localhost:2181
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+application:
+  security:
+    jwt:
+      secret-key: Z3VlbWFoYXNpc3dhYmludXNpZ3BheWFuZ3RpbmdnaWJlbmdldG9rZQ
+      expiration: 3600000
+      refresh-token:
+        expiration: 3600000
+
+server:
+  port: 8084

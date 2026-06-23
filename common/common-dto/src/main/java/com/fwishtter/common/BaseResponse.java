@@ -1,4 +1,4 @@
-package com.fwishtter.userservice.dto;
+package com.fwishtter.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record BaseResponse <T>(
+public record BaseResponse<T>(
         Integer status,
         @JsonIgnore
         HttpStatus code,

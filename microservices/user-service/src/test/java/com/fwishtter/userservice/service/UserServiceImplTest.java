@@ -1,7 +1,7 @@
-package com.microservices.userservice.service;
+package com.fwishtter.userservice.service;
 
-import com.microservices.userservice.dto.UserRegisterRequest;
-import com.microservices.userservice.repository.UserRepository;
+import com.fwishtter.auth.UserRegisterRequest;
+import com.fwishtter.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

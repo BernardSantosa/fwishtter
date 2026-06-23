@@ -1,4 +1,4 @@
-package com.microservices.userservice.service;
+package com.fwishtter.userservice.service;
 
 public interface ValidatorService {
 

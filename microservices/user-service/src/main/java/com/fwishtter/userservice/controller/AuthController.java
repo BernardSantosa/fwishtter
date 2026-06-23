@@ -1,7 +1,9 @@
-package com.microservices.userservice.controller;
+package com.fwishtter.userservice.controller;
 
-import com.microservices.userservice.dto.*;
-import com.microservices.userservice.service.AuthService;
+import com.fwishtter.auth.UserLoginRequest;
+import com.fwishtter.auth.UserRegisterRequest;
+import com.fwishtter.common.BaseResponse;
+import com.fwishtter.userservice.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,15 +18,15 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping(value = "/register",
-                consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    @PostMapping(value = "/register"
+//                consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public ResponseEntity<BaseResponse> register(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
         BaseResponse response = authService.register(userRegisterRequest);
         return new ResponseEntity<>(response, response.code());
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<BaseResponse> login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
         BaseResponse response = authService.login(userLoginRequest);
         return new ResponseEntity<>(response, response.code());

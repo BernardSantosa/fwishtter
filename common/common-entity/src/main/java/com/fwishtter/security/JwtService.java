@@ -1,4 +1,4 @@
-package com.fwishtter.userservice.security;
+package com.fwishtter.security;
 
 import com.fwishtter.entity.user.User;
 import io.jsonwebtoken.Claims;

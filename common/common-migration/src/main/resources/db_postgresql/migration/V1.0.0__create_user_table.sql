@@ -6,7 +6,12 @@ CREATE TABLE users (
     handle VARCHAR(50) UNIQUE NOT NULL,
     phone_number VARCHAR(20),
     bio VARCHAR(160),
+    address TEXT,
     profile_picture_url TEXT,
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL
+    created_time TIMESTAMP(6) NOT NULL,
+    updated_time TIMESTAMP,
+    account_non_expired BOOLEAN NOT NULL,
+    account_non_locked BOOLEAN NOT NULL,
+    credentials_non_expired BOOLEAN NOT NULL,
+    enabled BOOLEAN NOT NULL
 );

@@ -1,4 +1,4 @@
-package fwishtter.com.converter;
+package com.fwishtter.converter;
 
 import org.hibernate.usertype.UserType;
 
@@ -17,8 +17,8 @@ public class LocalDateTimeType implements UserType<LocalDateTime> {
     }
 
     @Override
-    public LocalDateTime deepCopy(LocalDateTime localDateTime) {
-        return null;
+    public LocalDateTime deepCopy(LocalDateTime value) {
+        return value;
     }
 
     @Override

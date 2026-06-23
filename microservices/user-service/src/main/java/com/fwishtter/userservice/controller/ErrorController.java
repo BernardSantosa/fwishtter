@@ -1,8 +1,6 @@
-package com.microservices.userservice.controller;
+package com.fwishtter.userservice.controller;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-import com.microservices.userservice.dto.BaseResponse;
-import jakarta.validation.ConstraintViolationException;
+import com.fwishtter.common.BaseResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

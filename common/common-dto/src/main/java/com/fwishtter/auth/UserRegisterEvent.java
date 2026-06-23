@@ -1,9 +1,8 @@
-package com.fwishtter.userservice.dto;
+package com.fwishtter.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.kafka.core.KafkaTemplate;
 
 @Data
 @AllArgsConstructor

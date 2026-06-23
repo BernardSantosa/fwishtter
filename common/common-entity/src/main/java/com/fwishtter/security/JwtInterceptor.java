@@ -1,4 +1,4 @@
-package com.fwishtter.userservice.security;
+package com.fwishtter.security;
 
 import lombok.Getter;
 import org.springframework.stereotype.Service;

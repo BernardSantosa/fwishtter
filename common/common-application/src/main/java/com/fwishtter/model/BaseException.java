@@ -1,4 +1,4 @@
-package com.fwishtter.userservice.exception;
+package com.fwishtter.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

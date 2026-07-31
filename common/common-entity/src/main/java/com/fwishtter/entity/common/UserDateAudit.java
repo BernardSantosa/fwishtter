@@ -1,6 +1,6 @@
 package com.fwishtter.entity.common;
 
-import com.fwishtter.DateHelper;
+import com.fwishtter.helper.DateHelper;
 import com.fwishtter.converter.LocalDateTimeType;
 import jakarta.persistence.*;
 import lombok.Getter;

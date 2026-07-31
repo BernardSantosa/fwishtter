@@ -28,6 +28,8 @@ public class User extends IdDateAudit implements UserDetails {
 
     @Column(unique = true)
     private String email;
+
+    @Column(name = "password")
     private String password;
 
     @Column(unique = true, nullable = false, length = 50)
@@ -36,7 +38,10 @@ public class User extends IdDateAudit implements UserDetails {
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
+    @Column(name = "bio")
     private String bio;
+
+    @Column(name = "address")
     private String address;
 
     // for Jwt

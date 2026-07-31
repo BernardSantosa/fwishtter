@@ -66,7 +66,7 @@ public class JwtService {
                 .builder()
                 .setHeaderParam("typ", "JWT")
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getDisplayName())
+                .setSubject(userDetails.getHandle())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)

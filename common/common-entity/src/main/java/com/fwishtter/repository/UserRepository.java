@@ -13,9 +13,9 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = """
         SELECT * FROM users
-        WHERE display_name = :username
+        WHERE handle = :username
     """, nativeQuery = true)
-    Optional<User> findUserByDisplayName(@Param("username") String username);
+    Optional<User> findUserByHandle(@Param("username") String username);
 
     Optional<User> findUserByEmail(String email);
 
@@ -24,8 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserById(UUID id);
 
     Optional<User> findUserByPhoneNumber(String phoneNumber);
-
-    Optional<User> findUserByHandle(String handle);
 
     Optional<User> findByDisplayNameAndEnabledIsTrue(String username);
 

@@ -4,8 +4,13 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/fwishtter_api
-    username:
+    username: bernardsantosa
     password:
+
+  data:
+    redis:
+      host: localhost
+      post: 6379
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -41,7 +46,7 @@ spring:
 application:
   security:
     jwt:
-      secret-key:
+      secret-key: Z3VlbWFoYXNpc3dhYmludXNpZ3BheWFuZ3RpbmdnaWJlbmdldG9rZQ
       expiration: 3600000
       refresh-token:
         expiration: 3600000

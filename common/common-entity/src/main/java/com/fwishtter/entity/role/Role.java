@@ -17,5 +17,6 @@ public class Role extends IdDateAudit {
     @Column(unique = true, nullable = false, length = 20)
     private String name;
 
+    @Column(name = "description")
     private String description;
 }

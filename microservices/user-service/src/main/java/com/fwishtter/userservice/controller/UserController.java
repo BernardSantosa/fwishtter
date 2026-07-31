@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -25,8 +27,20 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<BaseResponse> getUserDetail() {
-        BaseResponse response = userService.getUserDetailByDisplayName();
+    public ResponseEntity<BaseResponse> getUserProfile() {
+        BaseResponse response = userService.getProfileByDisplayName();
+        return new ResponseEntity<>(response, response.code());
+    }
+
+    @PostMapping("/detail")
+    public ResponseEntity<BaseResponse> getUserDetail(@Valid @RequestParam(name = "user_id") UUID userId) {
+        BaseResponse response = userService.getUserDetail(userId);
+        return new ResponseEntity<>(response, response.code());
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<BaseResponse> getUserList() {
+        BaseResponse response = userService.getUserList();
         return new ResponseEntity<>(response, response.code());
     }
 

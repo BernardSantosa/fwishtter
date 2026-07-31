@@ -1,34 +1,38 @@
 package com.fwishtter.entity.fweesht;
 
 import com.fwishtter.entity.common.UserDateAudit;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "tweets")
 public class Tweet extends UserDateAudit {
 
     @Column(name = "author_id", nullable = false)
-    private UUID author_id;
+    private UUID authorId;
 
-    @Column(name = "parent_id", nullable = false)
-    private UUID parent_id;
+    @Column(name = "parent_id")
+    private UUID parentId;
 
     @Column(name = "content", nullable = false)
     private String content;
 
     @Column(name = "type", nullable = false)
     private String type;
+
+    @Column(name = "created_by", nullable = false)
+    private String createdBy;
+
+    @Column(name = "updated_by", nullable = false)
+    private String updatedBy ;
 
     @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TweetMedia> mediaList;

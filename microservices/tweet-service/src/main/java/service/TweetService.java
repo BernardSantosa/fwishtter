@@ -1,9 +1,11 @@
 package service;
 
 import com.fwishtter.common.BaseResponse;
+import com.fwishtter.tweet.CreateTweetRequestDto;
 
 public interface TweetService {
 
-    BaseResponse newTweets();
+    BaseResponse createTweets(CreateTweetRequestDto tweetReq);
 
+    BaseResponse getAllTweet();
 }

@@ -4,7 +4,7 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/fwishtter_api
-    username:
+    username: bernardsantosa
     password:
 
   jpa:
@@ -41,7 +41,7 @@ spring:
 application:
   security:
     jwt:
-      secret-key:
+      secret-key: Z3VlbWFoYXNpc3dhYmludXNpZ3BheWFuZ3RpbmdnaWJlbmdldG9rZQ
       expiration: 3600000
       refresh-token:
         expiration: 3600000

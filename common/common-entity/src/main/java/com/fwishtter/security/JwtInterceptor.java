@@ -24,9 +24,7 @@ public class JwtInterceptor {
         return userName.get();
     }
 
-    public void setUserName(String userName) {
-        this.userName.set(userName);
-    }
+    public void setUserName(String userName) { this.userName.set(userName); }
 
     public String getUserType() {
         return userType.get();

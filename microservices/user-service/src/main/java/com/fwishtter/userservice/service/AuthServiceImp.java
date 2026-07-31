@@ -126,7 +126,7 @@ public class AuthServiceImp implements AuthService {
             return new BaseResponse<>(
                     HttpStatus.OK.value(),
                     HttpStatus.OK,
-                    "Login Successfully, Welcome!",
+                    "login successfully, welcome \u200B\uD83E\uDD17\u200B!",
                     response
             );
         } else {

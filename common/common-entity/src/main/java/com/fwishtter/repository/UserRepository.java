@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,4 +29,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByDisplayNameAndEnabledIsTrue(String username);
 
     boolean existsByHandle(String candidate);
+
+    @Query("""
+        SELECT u.id FROM User u
+        WHERE LOWER(u.displayName) LIKE LOWER(CONCAT("%", :search, "%"))
+        OR LOWER(u.handle) LIKE LOWER(CONCAT("%", :search, "%"))
+    """)
+    List<UUID> findUserIdBySearch(@Param("search") String search);
+
+//    List<User> findByDisplayNameContainingIgnoreCaseOrHandleContainingIgnoreCase(String search);
 }

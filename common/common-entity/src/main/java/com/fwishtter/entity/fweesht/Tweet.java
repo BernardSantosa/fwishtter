@@ -1,5 +1,6 @@
 package com.fwishtter.entity.fweesht;
 
+import com.fwishtter.entity.common.IdDateAudit;
 import com.fwishtter.entity.common.UserDateAudit;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tweets")
-public class Tweet extends UserDateAudit {
+public class Tweet extends IdDateAudit {
 
     @Column(name = "author_id", nullable = false)
     private UUID authorId;
@@ -28,10 +29,10 @@ public class Tweet extends UserDateAudit {
     @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "created_by", nullable = false)
+    @Column(name = "created_by")
     private String createdBy;
 
-    @Column(name = "updated_by", nullable = false)
+    @Column(name = "updated_by")
     private String updatedBy ;
 
     @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)

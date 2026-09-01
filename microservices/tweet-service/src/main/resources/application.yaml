@@ -1,6 +1,6 @@
 spring:
   application:
-    name: twitter-service
+    name: tweet-service
 
   datasource:
     url: jdbc:postgresql://localhost:5432/fwishtter_api
@@ -10,7 +10,7 @@ spring:
   data:
     redis:
       host: localhost
-      post: 6379
+      port: 6380
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -19,9 +19,9 @@ spring:
     show-sql: true
 
   flyway:
-    baseline-on-migrate: true
+    baseline-on-migrate: false
     locations: classpath:db_postgresql/migration
-    url: jdbc:postgresql://localhost:5432/fwishtter_api
+    url: jdbc:postgresql://localhost :5432/fwishtter_api
     enabled: false
     user: bernardsantosa
     password:
